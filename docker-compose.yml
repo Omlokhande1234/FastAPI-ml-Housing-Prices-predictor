@@ -4,8 +4,6 @@ services:
     image: postgres:15
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    # Docker Compose will automatically read variables from the .env file
-    # and substitute them here. This is now secure.
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
