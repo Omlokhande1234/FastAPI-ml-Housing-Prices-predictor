@@ -86,7 +86,6 @@ def train_from_kaggle():
 
 
 # -------- USER REGISTRATION --------
-# FIXED: Used PascalCase for the schema class (schema.UserCreate)
 @app.post("/users", status_code=201)
 def create_user(user: schema.UserCreate, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_username(db, user.username)
@@ -97,7 +96,7 @@ def create_user(user: schema.UserCreate, db: Session = Depends(get_db)):
 
 
 # -------- PREDICTION ENDPOINT --------
-# FIXED: Used PascalCase for schema classes (schema.PredictionResponse, schema.PredictionRequest)
+
 @app.post("/predict", response_model=schema.PredictionResponse)
 def predict(
     payload: schema.PredictionRequest,
@@ -108,18 +107,12 @@ def predict(
     if model is None:
         raise HTTPException(status_code=500, detail="Model not trained or loaded yet. Please call /train or /train/kaggle first.")
 
-    # ACTION: You must change your ml_model and schema files to handle this.
-    # The model expects a DataFrame or a 2D array with many features.
-    # You need to create a feature vector from the payload in the same way you did during training.
-    # This is just a placeholder example.
     try:
-        # Example: Your ml_model.py should have a function to prepare features
         feature_vector = ml_model.prepare_features(payload)
         pred = float(model.predict(feature_vector)[0])
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to create prediction. Check input data. Error: {e}")
 
-    # ACTION: Your crud function might need updating depending on what you want to save.
     crud.create_prediction(db, payload, pred)
     return {"predicted_price": pred}
 
