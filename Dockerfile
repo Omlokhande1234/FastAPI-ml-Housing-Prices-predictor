@@ -10,7 +10,7 @@ COPY requirements.txt requirements.txt
 
 # Install the Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
-
+RUN pip install kaggle 
 # Copy your application code into the container
 COPY ./app /app/app
 # Copy your trained model file into the container
@@ -18,4 +18,4 @@ COPY ./model /app/model
 
 # Command to run the Uvicorn server
 # The host 0.0.0.0 makes the app accessible from outside the container
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "10000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
